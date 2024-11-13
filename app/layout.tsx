@@ -1,6 +1,23 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Image from "next/image";
 import "./globals.css";
+import Logo from "./acesst/logo.png";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+  navigationMenuTriggerStyle
+} from "@/components/ui/navigation-menu"
+import Link from 'next/link'
+import React from 'react'
+import { Button } from "@/components/ui/button";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,13 +40,150 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const components: { title: string; href: string; description: string }[] = [
+    { title: "Tratores", href: "/", description: "aluge tratores" },
+    { title: "Tratores", href: "/", description: "aluge tratores" },
+    { title: "Tratores", href: "/", description: "aluge tratores" },
+    { title: "Tratores", href: "/", description: "aluge tratores" },
+    { title: "Tratores", href: "/", description: "aluge tratores" },
+  ]
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header className="flex justify-between">
+          <div className="flex">
+            <Image src={Logo} width={200} alt="logotipo" />
+            <NavigationMenu>
+              <NavigationMenuList>
+
+                <NavigationMenuItem>
+                  <Link href="/docs" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      Alugel
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/docs" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      Compra
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/docs" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      Troca
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+          <div className="flex m-5  w-44 justify-between">
+            <Link href="/">
+              <Button variant={"outline"} >Login</Button>
+            </Link>
+            <Link href="/">
+              <Button className="bg-emerald-500 hover:bg-emerald-700" >Cadastrar</Button>
+            </Link>
+          </div>
+        </header>
         {children}
+        <footer>
+          sobre
+        </footer>
       </body>
     </html>
   );
 }
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          }
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  )
+})
+ListItem.displayName = "ListItem"
+
+// {/* item 1 */ }
+// <NavigationMenuItem>
+//   <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
+//   <NavigationMenuContent>
+//     <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+//       <li className="row-span-3">
+
+//         <NavigationMenuLink asChild>
+//           <a
+//             className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+//             href="/"
+//           >
+//             <div className="mb-2 mt-4 text-lg font-medium">
+//               shadcn/ui
+//             </div>
+//             <p className="text-sm leading-tight text-muted-foreground">
+//               Beautifully designed components that you can copy and
+//               paste into your apps. Accessible. Customizable. Open
+//               Source.
+//             </p>
+//           </a>
+//         </NavigationMenuLink>
+//       </li>
+//       <ListItem href="/" title="Introduction">
+//         Re-usable components built using Radix UI and Tailwind CSS.
+//       </ListItem>
+//       <ListItem href="/" title="Introduction">
+//         Re-usable components built using Radix UI and Tailwind CSS.
+//       </ListItem>
+//       <ListItem href="/" title="Introduction">
+//         Re-usable components built using Radix UI and Tailwind CSS.
+//       </ListItem>
+//     </ul>
+//   </NavigationMenuContent>
+// </NavigationMenuItem>
+// {/* 2 */ }
+// <NavigationMenuItem>
+//   <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+//   <NavigationMenuContent>
+//     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+//       {components.map((component) => (
+//         <ListItem
+//           key={component.title}
+//           title={component.title}
+//           href={component.href}
+//         >
+//           {component.description}
+//         </ListItem>
+//       ))}
+//     </ul>
+//   </NavigationMenuContent>
+// </NavigationMenuItem>
+// {/* 3 */ }
+// <NavigationMenuItem>
+//   <Link href="/docs" legacyBehavior passHref>
+//     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+//       Documentation
+//     </NavigationMenuLink>
+//   </Link>
+// </NavigationMenuItem>
